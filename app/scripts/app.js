@@ -12,16 +12,17 @@ angular
     'oc.lazyLoad',
     'ui.router',
     'ui.bootstrap',
-    'angular-loading-bar',
+    'angular-loading-bar'
   ])
-  .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider) {
+  .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$locationProvider',function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $locationProvider) {
     
     $ocLazyLoadProvider.config({
       debug:false,
-      events:true,
+      events:true
     });
 
     $urlRouterProvider.otherwise('/dashboard/home');
+    $locationProvider.html5Mode(true);
 
     $stateProvider
       .state('dashboard', {
@@ -38,14 +39,14 @@ angular
                     'scripts/directives/sidebar/sidebar.js',
                     'scripts/directives/sidebar/sidebar-search/sidebar-search.js'
                     ]
-                }),
+                })
                 $ocLazyLoad.load(
                 {
                    name:'toggle-switch',
                    files:["bower_components/angular-toggle-switch/angular-toggle-switch.min.js",
                           "bower_components/angular-toggle-switch/angular-toggle-switch.css"
                       ]
-                }),
+                })
                 $ocLazyLoad.load(
                 {
                   name:'ngAnimate',
@@ -89,7 +90,7 @@ angular
               'scripts/directives/chat/chat.js',
               'scripts/directives/dashboard/stats/stats.js'
               ]
-            })
+            });
           }
         }
       })
@@ -121,7 +122,7 @@ angular
             $ocLazyLoad.load({
                 name:'sbAdminApp',
                 files:['scripts/controllers/chartContoller.js']
-            })
+            });
           }
         }
     })
@@ -152,7 +153,7 @@ angular
       .state('dashboard.grid',{
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
-   })
+   });
   }]);
 
     
