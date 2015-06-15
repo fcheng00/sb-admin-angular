@@ -14,15 +14,27 @@ angular
     'ui.bootstrap',
     'angular-loading-bar'
   ])
-  .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$locationProvider',function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $locationProvider) {
+  .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$locationProvider', '$httpProvider',function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $locationProvider, $httpProvider) {
     
     $ocLazyLoadProvider.config({
       debug:false,
       events:true
     });
+    $httpProvider.defaults.useXDomain = true;
+    //$httpProvider.defaults.withCredentials = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    $httpProvider.defaults.headers.post['Accept'] = 'application/json, text/javascript';
+    $httpProvider.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
+    //$httpProvider.defaults.headers.post['Access-Control-Max-Age'] = '1728000';
+    //$httpProvider.defaults.headers.common['Access-Control-Max-Age'] = '1728000';
+    $httpProvider.defaults.headers.common['Accept'] = 'application/json';
+    $httpProvider.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
+    //$httpProvider.defaults.headers.common['Access-Control-Allow-Headers'] = '*';
+    
 
     $urlRouterProvider.otherwise('/dashboard/home');
-    $locationProvider.html5Mode(true);
+    //$urlRouterProvider.otherwise('/dashboard/home');
+    //$locationProvider.html5Mode(true);
 
     $stateProvider
       .state('dashboard', {
@@ -104,7 +116,18 @@ angular
     })
       .state('login',{
         templateUrl:'views/pages/login.html',
-        url:'/login'
+        url:'/login',
+        controller: 'LoginController',
+        resolve: {
+          loadMyFiles:function($ocLazyLoad) {
+            return $ocLazyLoad.load({
+              name:'sbAdminApp',
+              files:[
+              'scripts/directives/login/login.js'
+              ]
+            });
+          }
+      }
     })
       .state('dashboard.chart',{
         templateUrl:'views/chart.html',
@@ -153,7 +176,23 @@ angular
       .state('dashboard.grid',{
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
-   });
+   })
+           .state('dashboard.tzctest',{
+               templateUrl: 'views/pages/tzctest.html',
+               url:'/tzctest',
+               controller:'TestController',
+               resolve: {
+                loadMyFile:function($ocLazyLoad) {
+                  return $ocLazyLoad.load({
+                      name:'sbAdminApp',
+                      files:['scripts/directives/tzctest/tzctest.js']
+                  });
+                }
+              }
+           });
+
   }]);
+
+
 
     
