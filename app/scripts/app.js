@@ -177,19 +177,40 @@ angular
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
    })
-           .state('dashboard.tzctest',{
-               templateUrl: 'views/pages/tzctest.html',
-               url:'/tzctest',
-               controller:'TestController',
-               resolve: {
-                loadMyFile:function($ocLazyLoad) {
-                  return $ocLazyLoad.load({
-                      name:'sbAdminApp',
-                      files:['scripts/directives/tzctest/tzctest.js']
-                  });
-                }
-              }
+      .state('dashboard.tzctest',{
+        templateUrl: 'views/pages/tzctest.html',
+        url:'/tzctest',
+        controller:'TestController',
+        resolve: {
+         loadMyFile:function($ocLazyLoad) {
+           return $ocLazyLoad.load({
+               name:'sbAdminApp',
+               files:['scripts/directives/tzctest/tzctest.js']
            });
+         }
+       }
+    })
+      .state('dashboard.realtime', {
+        templateUrl:'views/realtimechart.html',
+        url:'/realtime',
+        controller:'realtimeCtrl',
+        resolve: {
+          loadMyFile:function($ocLazyLoad) {
+            return $ocLazyLoad.load({
+              name:'chart.js',
+              files:[
+                'bower_components/angular-chart.js/dist/angular-chart.min.js',
+                'bower_components/angular-chart.js/dist/angular-chart.css'
+                
+              ]
+            }),
+            $ocLazyLoad.load({
+                name:'sbAdminApp',
+                files:['scripts/controllers/realtime.js']
+            });
+          }
+        }
+    });
 
   }]);
 
